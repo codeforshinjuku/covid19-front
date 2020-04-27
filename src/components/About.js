@@ -116,7 +116,7 @@ export default function Top() {
           >
             Facebookグループ
           </Link>
-          でも情報共有を行っているので、ご興味のある方はご参加をお願いいたします。
+          でも情報共有を行っているので、ご興味のある方はご参加をお願いします。
         </Typography>
         <Copyright />
       </main>
