@@ -1,9 +1,10 @@
-Code for Shinjuku が開発を行っている東京新型コロナグラフのリポジトリです [東京新型コロナグラフ](https://stopcovid19.codeforshinjuku.org/).
+Code for Shinjuku の東京新型コロナグラフのリポジトリです。<br />
+[東京新型コロナグラフ](https://stopcovid19.codeforshinjuku.org/).
 
 ### 実行方法
 
 ディレクトリで yarn を実行するとパッケージがインストール Dekimasu。<br />
-yarn start で [http://localhost:3000](http://localhost:3000)でページを確認することができます.
+yarn start で [http://localhost:3000](http://localhost:3000)でページを確認することができます。
 
 ### デプロイ
 
