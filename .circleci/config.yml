@@ -1,0 +1,60 @@
+version: 2.1
+
+executors:
+  default:
+    docker:
+      - image: circleci/node:10.15.3
+
+commands:
+  npm_install:
+    steps:
+      - restore_cache:
+          name: Restore Dependencies
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies
+      - run:
+          name: Install Dependencies
+          command: yarn install
+      - save_cache:
+          name: Save Dependencies
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+  firebase_install:
+    steps:
+      - run:
+          name: Install Firebase CLI
+          command: yarn add -D firebase-tools
+
+jobs:
+  build:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - npm_install
+
+  deploy:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - firebase_install
+      - npm_install
+      - run:
+          name: Build Project
+          command: yarn build
+      - run:
+          name: Deploy to Firebase Hosting
+          command: node_modules/.bin/firebase deploy --only hosting --project "$FIREBASE_PROJECT_ID" --token "$FIREBASE_TOKEN"
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          filters:
+            branches:
+              only: master
