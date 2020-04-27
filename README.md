@@ -15,4 +15,4 @@ CircleCI による自動デプロイに対応しています。
 
 東京都のデータを整形し、JSON として利用しています。<br />
 データ整形システムについては、以下のリポジトリ で公開しています。<br />
-[データ整形システム](https://github.com/codeforshinjuku/covid19)
+[https://github.com/codeforshinjuku/covid19](https://github.com/codeforshinjuku/covid19)
