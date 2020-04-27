@@ -227,9 +227,9 @@ function BarChartPage() {
             value={graph}
             onChange={handleGraphChange}
           >
-            <MenuItem value={"graph1"}>感染者累計</MenuItem>
+            <MenuItem value={"graph1"}>累計</MenuItem>
             <MenuItem value={"graph2"}>10万人あたり</MenuItem>
-            <MenuItem value={"graph3"}>日ごと増加数</MenuItem>
+            <MenuItem value={"graph3"}>日別</MenuItem>
             ))}
           </Select>
         </FormControl>
