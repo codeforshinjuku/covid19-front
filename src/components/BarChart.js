@@ -64,7 +64,7 @@ function BarChartPage() {
 
   let cityLabel = [];
   if (isLoaded(citylist)) {
-    citylist.map((city) => {
+    citylist.forEach(function (city) {
       cityLabel[city.code] = city.label;
     });
   }
