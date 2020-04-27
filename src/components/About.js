@@ -70,7 +70,7 @@ export default function Top() {
           <br />
           基礎自治体の目線を意識したデータやチャートを選定いたしました。
           <br />
-          自治体関係者のみなさまや住民のみなさまにご活用いただければ幸いです。
+          自治体関係者のみなさまや都民のみなさま、そして新宿区民のみなさまにご活用いただければ幸いです。
         </Typography>
         <Typography paragraph className={classes.paragraph}>
           本サービスは、横断的な情報収集の時間を減らすことを目的にしております。
