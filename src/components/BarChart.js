@@ -105,7 +105,7 @@ function BarChartPage() {
       setBarChart(true);
       setLineChart(false);
     }
-    if (event.target.value === "graph3" || event.target.value == "graph4") {
+    if (event.target.value === "graph3" || event.target.value === "graph4") {
       setBarChart(false);
       setLineChart(true);
     }

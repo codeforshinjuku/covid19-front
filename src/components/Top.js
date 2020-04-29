@@ -72,6 +72,7 @@ export default function Top() {
             ※都と区市町村が公開する感染者数が異なる場合があります。
             <br />
             ※4/12練馬区が60から59へと減少する挙動は元データを反映したものです。
+            <br />
           </span>
         </Typography>
         <div className={classes.buttons}>

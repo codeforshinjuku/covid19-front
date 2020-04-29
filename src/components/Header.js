@@ -103,9 +103,8 @@ function Header(props) {
         </ListItem>
         <a
           href="https://github.com/codeforshinjuku"
-          // eslint-disable-next-line react/jsx-no-target-blank
           target="_blank"
-          rel="noopenner"
+          rel="noopener noreferrer"
           color="inherit"
           style={{ textDecoration: "none", color: "rgba(0, 0, 0, 0.87)" }}
         >
