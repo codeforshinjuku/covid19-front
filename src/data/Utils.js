@@ -9,6 +9,9 @@ export const patientUrl =
 export const diffUrl =
   "https://raw.githubusercontent.com/codeforshinjuku/covid19/master/dist/patient_diff.json";
 
+export const rtUrl =
+  "https://raw.githubusercontent.com/codeforshinjuku/covid19-Rt/master/dist/rt_tokyo.json";
+
 export function getPopulation() {
   const population = {
     "131016": 66080,
@@ -96,8 +99,10 @@ export function isBarChart(patientList, barChart) {
 }
 
 //何度か使う関数
-export function remove2020(n) {
-  return n.toString().replace("2020/", "");
+export function remove2020(date) {
+  const s = date.toString().replace(/-/g, "/");
+  const str = s.toString().replace("2020/", "");
+  return str.replace(/0+(?=[0-9])/g, "");
 }
 
 export function perPopulation(n1, n2) {

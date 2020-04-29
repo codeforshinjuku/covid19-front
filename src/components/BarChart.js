@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  LineChart,
+  ComposedChart,
   Line,
   BarChart,
   Bar,
@@ -11,6 +11,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ReferenceLine,
+  Area,
 } from "recharts";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -27,6 +29,7 @@ import {
   citylistUrl,
   patientUrl,
   diffUrl,
+  rtUrl,
 } from "../data/Utils";
 import Card from "@material-ui/core/Card";
 
@@ -51,6 +54,7 @@ function BarChartPage() {
   const [citylist, setCitylist] = useState(false);
   const [patient, setPatient] = useState(false);
   const [diffList, setDiffList] = useState(false);
+  const [rtList, setRtList] = useState(false);
   const [code, setCode] = useState(131041);
   const [code2, setCode2] = useState(false);
   const [code3, setCode3] = useState(false);
@@ -101,7 +105,7 @@ function BarChartPage() {
       setBarChart(true);
       setLineChart(false);
     }
-    if (event.target.value === "graph3") {
+    if (event.target.value === "graph3" || event.target.value == "graph4") {
       setBarChart(false);
       setLineChart(true);
     }
@@ -126,49 +130,82 @@ function BarChartPage() {
     getData(diffUrl, setDiffList);
   }
 
+  if (!rtList) {
+    getData(rtUrl, setRtList);
+  }
+
   //JSONの加工
   let patientList = [];
   let patientTemp;
   let patientTemp2;
   let patientTemp3;
-  if (isLoaded(patient) && patient[code]) {
+  if (isLoaded(patient) && patient[code] && diffList[code] && rtList.data) {
     patientTemp =
-      graph === "graph1" || graph === "graph2" ? patient[code] : diffList[code];
+      graph === "graph1" || graph === "graph2"
+        ? patient[code]
+        : graph === "graph3"
+        ? diffList[code]
+        : rtList.data[code];
     if (code2) {
       patientTemp2 =
         graph === "graph1" || graph === "graph2"
           ? patient[code2]
-          : diffList[code2];
+          : graph === "graph3"
+          ? diffList[code2]
+          : rtList.data[code2];
     }
     if (code3) {
       patientTemp3 =
         graph === "graph1" || graph === "graph2"
           ? patient[code3]
-          : diffList[code3];
+          : graph === "graph3"
+          ? diffList[code3]
+          : rtList.data[code3];
     }
 
     for (let key in patientTemp) {
       if (code && !code2 && !code3)
         patientList.push({
-          date: remove2020(key),
+          date:
+            graph === "graph4"
+              ? remove2020(patientTemp[key].date)
+              : remove2020(key),
           patient:
             graph === "graph1" || graph === "graph3"
               ? patientTemp[key]
-              : perPopulation(patientTemp[key], population[code]),
+              : graph === "graph2"
+              ? perPopulation(patientTemp[key], population[code])
+              : [
+                  patientTemp[key].ML,
+                  [patientTemp[key].Low_90, patientTemp[key].High_90],
+                ],
         });
       if (code && code2 && !code3) {
         for (let key2 in patientTemp2) {
           if (key2 === key) {
             patientList.push({
-              date: remove2020(key),
+              date:
+                graph === "graph4"
+                  ? remove2020(patientTemp[key].date)
+                  : remove2020(key),
               patient:
                 graph === "graph1" || graph === "graph3"
                   ? patientTemp[key]
-                  : perPopulation(patientTemp[key], population[code]),
+                  : graph === "graph2"
+                  ? perPopulation(patientTemp[key], population[code])
+                  : [
+                      patientTemp[key].ML,
+                      [patientTemp[key].Low_90, patientTemp[key].High_90],
+                    ],
               patient2:
                 graph === "graph1" || graph === "graph3"
                   ? patientTemp2[key2]
-                  : perPopulation(patientTemp2[key2], population[code2]),
+                  : graph === "graph2"
+                  ? perPopulation(patientTemp2[key2], population[code2])
+                  : [
+                      patientTemp2[key2].ML,
+                      [patientTemp2[key2].Low_90, patientTemp2[key2].High_90],
+                    ],
             });
           }
         }
@@ -177,15 +214,28 @@ function BarChartPage() {
         for (let key3 in patientTemp3) {
           if (key3 === key) {
             patientList.push({
-              date: remove2020(key),
+              date:
+                graph === "graph4"
+                  ? remove2020(patientTemp[key].date)
+                  : remove2020(key),
               patient:
                 graph === "graph1" || graph === "graph3"
                   ? patientTemp[key]
-                  : perPopulation(patientTemp[key], population[code]),
+                  : graph === "graph2"
+                  ? perPopulation(patientTemp[key], population[code])
+                  : [
+                      patientTemp[key].ML,
+                      [patientTemp[key].Low_90, patientTemp[key].High_90],
+                    ],
               patient3:
                 graph === "graph1" || graph === "graph3"
                   ? patientTemp3[key3]
-                  : perPopulation(patientTemp3[key3], population[code3]),
+                  : graph === "graph2"
+                  ? perPopulation(patientTemp3[key3], population[code3])
+                  : [
+                      patientTemp3[key3].ML,
+                      [patientTemp3[key3].Low_90, patientTemp3[key3].High_90],
+                    ],
             });
           }
         }
@@ -195,19 +245,37 @@ function BarChartPage() {
           for (let key3 in patientTemp3) {
             if (key === key2 && key2 === key3 && key === key3) {
               patientList.push({
-                date: remove2020(key),
+                date:
+                  graph === "graph4"
+                    ? remove2020(patientTemp[key].date)
+                    : remove2020(key),
                 patient:
                   graph === "graph1" || graph === "graph3"
                     ? patientTemp[key]
-                    : perPopulation(patientTemp[key], population[code]),
+                    : graph === "graph2"
+                    ? perPopulation(patientTemp[key], population[code])
+                    : [
+                        patientTemp[key].ML,
+                        [patientTemp[key].Low_90, patientTemp[key].High_90],
+                      ],
                 patient2:
                   graph === "graph1" || graph === "graph3"
                     ? patientTemp2[key2]
-                    : perPopulation(patientTemp2[key2], population[code2]),
+                    : graph === "graph2"
+                    ? perPopulation(patientTemp2[key2], population[code2])
+                    : [
+                        patientTemp2[key2].ML,
+                        [patientTemp2[key2].Low_90, patientTemp2[key2].High_90],
+                      ],
                 patient3:
                   graph === "graph1" || graph === "graph3"
                     ? patientTemp3[key3]
-                    : perPopulation(patientTemp3[key3], population[code3]),
+                    : graph === "graph2"
+                    ? perPopulation(patientTemp3[key3], population[code3])
+                    : [
+                        patientTemp3[key3].ML,
+                        [patientTemp3[key3].Low_90, patientTemp3[key3].High_90],
+                      ],
               });
             }
           }
@@ -227,9 +295,10 @@ function BarChartPage() {
             value={graph}
             onChange={handleGraphChange}
           >
-            <MenuItem value={"graph1"}>累計</MenuItem>
-            <MenuItem value={"graph2"}>10万人あたり</MenuItem>
-            <MenuItem value={"graph3"}>日別</MenuItem>
+            <MenuItem value={"graph1"}>累計感染者数</MenuItem>
+            <MenuItem value={"graph2"}>10万人あたり感染者数</MenuItem>
+            <MenuItem value={"graph3"}>日別感染者数</MenuItem>
+            <MenuItem value={"graph4"}>実効再生産数</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -349,7 +418,7 @@ function BarChartPage() {
           )}
           {lineChart && (
             <ResponsiveContainer>
-              <LineChart
+              <ComposedChart
                 data={patientList}
                 margin={{
                   top: 5,
@@ -360,13 +429,19 @@ function BarChartPage() {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
-                <YAxis />
+                {graph === "graph4" ? (
+                  <YAxis tickSize={5} ticks={[0.5, 1.0, 2.0, 3.0, 4.0, 5.0]} />
+                ) : (
+                  <YAxis />
+                )}
                 <Tooltip />
                 <Legend />
+                {graph === "graph4" && <ReferenceLine y={1} stroke="red" />}
                 <Line
                   type="monotone"
-                  dataKey="patient"
+                  dataKey={graph === "graph3" ? "patient" : "patient[0]"}
                   stroke="#8884d8"
+                  strokeWidth={2}
                   activeDot={{ r: 8 }}
                   name={
                     name + ":" + population[code].toLocaleString() + "(人口)"
@@ -375,8 +450,9 @@ function BarChartPage() {
                 {name2 && (
                   <Line
                     type="monotone"
-                    dataKey="patient2"
+                    dataKey={graph === "graph3" ? "patient2" : "patient2[0]"}
                     stroke="#82ca9d"
+                    strokeWidth={2}
                     activeDot={{ r: 8 }}
                     name={
                       name2 +
@@ -389,8 +465,9 @@ function BarChartPage() {
                 {name3 && (
                   <Line
                     type="monotone"
-                    dataKey="patient3"
+                    dataKey={graph === "graph3" ? "patient3" : "patient3[0]"}
                     stroke="#ffc658"
+                    strokeWidth={2}
                     activeDot={{ r: 8 }}
                     name={
                       name3 +
@@ -400,7 +477,43 @@ function BarChartPage() {
                     }
                   />
                 )}
-              </LineChart>
+                {graph === "graph4" && (
+                  <Area
+                    type="monotone"
+                    dataKey="patient[1]"
+                    stroke="none"
+                    fill="#8884d8"
+                    activeDot={false}
+                    opacity={0.2}
+                    isAnimationActive={false}
+                    name={name + "信頼区間90%"}
+                  />
+                )}
+                {name2 && graph === "graph4" && (
+                  <Area
+                    type="monotone"
+                    dataKey="patient2[1]"
+                    stroke="none"
+                    fill="#82ca9d"
+                    activeDot={false}
+                    opacity={0.2}
+                    isAnimationActive={false}
+                    name={name2 + "信頼区間90%"}
+                  />
+                )}
+                {name3 && graph === "graph4" && (
+                  <Area
+                    type="monotone"
+                    dataKey="patient2[1]"
+                    stroke="none"
+                    fill="#ffc658"
+                    activeDot={false}
+                    opacity={0.2}
+                    isAnimationActive={false}
+                    name={name3 + "信頼区間90%"}
+                  />
+                )}
+              </ComposedChart>
             </ResponsiveContainer>
           )}
         </div>

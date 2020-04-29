@@ -54,7 +54,6 @@ function VerticalChartPage() {
 
   if (!patient) {
     getData(patientUrl, setPatient);
-    console.log(patient);
   }
 
   let cityLabel = [];
