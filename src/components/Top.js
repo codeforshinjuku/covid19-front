@@ -84,6 +84,8 @@ export default function Top() {
               Rt Covid-19 Japanさま
             </Link>
             のコードをフォークし開発しました。
+            <br />
+            ※感染者数が少ない場合、Rtが1を超えやすくなります。
           </span>
         </Typography>
         <div className={classes.buttons}>
