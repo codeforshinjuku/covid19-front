@@ -8,6 +8,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ReferenceLine,
+  Scatter,
 } from "recharts";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -21,6 +23,7 @@ import {
   getData,
   citylistUrl,
   patientUrl,
+  rtUrl,
 } from "../data/Utils";
 import Card from "@material-ui/core/Card";
 
@@ -42,6 +45,7 @@ function VerticalChartPage() {
   const classes = useStyles();
   const [citylist, setCitylist] = useState(false);
   const [patient, setPatient] = useState(false);
+  const [rtList, setRtList] = useState(false);
   const [graph, setGraph] = useState("graph1");
 
   const handleGraphChange = (event) => {
@@ -56,6 +60,10 @@ function VerticalChartPage() {
     getData(patientUrl, setPatient);
   }
 
+  if (!rtList) {
+    getData(rtUrl, setRtList);
+  }
+
   let cityLabel = [];
   if (isLoaded(citylist)) {
     citylist.forEach(function (city) {
@@ -65,7 +73,8 @@ function VerticalChartPage() {
 
   let patientList = [];
   let patientTemp;
-  if (isLoaded(patient)) {
+  if (isLoaded(patient) && (graph === "graph1" || graph === "graph2")) {
+    patientList = [];
     for (let key in patient) {
       patientTemp = patient[key];
       patientList.push({
@@ -86,6 +95,35 @@ function VerticalChartPage() {
     });
   }
 
+  let rtData = [];
+  if (isLoaded(rtList) && graph === "graph3") {
+    patientList = [];
+    patientTemp = rtList.latest;
+    cityLabel.forEach(function (city) {
+      rtData = [0, [0, 0], [0, 0]];
+      for (let key in patientTemp) {
+        if (city === cityLabel[patientTemp[key].city]) {
+          rtData = [
+            patientTemp[key].ML,
+            [Number(patientTemp[key].Low_90), Number(patientTemp[key].High_90)],
+            [Number(patientTemp[key].Low_50), Number(patientTemp[key].High_50)],
+          ];
+        }
+        console.log(patientTemp);
+      }
+      patientList.push({
+        cityName: city,
+        patient: rtData,
+      });
+    });
+    patientList.sort(function (a, b) {
+      if (a.patient[0] < b.patient[0]) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+  }
   return (
     <Card className={classes.card}>
       <div>
@@ -99,6 +137,7 @@ function VerticalChartPage() {
           >
             <MenuItem value={"graph1"}>区市町村感染者累計</MenuItem>
             <MenuItem value={"graph2"}>区市町村10万人あたり</MenuItem>
+            <MenuItem value={"graph3"}>区市町村実効再生産数</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -116,16 +155,60 @@ function VerticalChartPage() {
             }}
           >
             <CartesianGrid stroke="#f5f5f5" />
-            <XAxis type="number" />
+            {graph === "graph3" ? (
+              <XAxis ticks={[0.5, 1.0, 2.0, 3.0, 4.0, 5.0]} type="number" />
+            ) : (
+              <XAxis type="number" />
+            )}
             <YAxis dataKey="cityName" type="category" />
             <Tooltip />
-            <Legend />
-            <Bar
-              dataKey="patient"
-              barSize={15}
-              fill="#8884d8"
-              name="感染者数"
-            />
+            <Legend verticalAlign="top" />
+            {(graph === "graph1" || graph === "graph2") && (
+              <Bar
+                dataKey="patient"
+                barSize={15}
+                fill="#8884d8"
+                name="感染者数"
+              />
+            )}
+            {graph === "graph3" && (
+              <Bar
+                dataKey="patient[1]"
+                barSize={15}
+                fill="#82ca9d"
+                name="信頼区間90%"
+                isAnimationActive={false}
+              />
+            )}
+            {graph === "graph3" && (
+              <Bar
+                dataKey="patient[2]"
+                barSize={15}
+                fill="#ffc658"
+                name="信頼区間50%"
+                opacity="0.2"
+                isAnimationActive={false}
+              />
+            )}
+            {graph === "graph3" && (
+              <Scatter
+                dataKey="patient[0]"
+                fill="#8884d8"
+                name="最頻値"
+                isAbove
+              />
+            )}
+            {graph === "graph3" && (
+              <ReferenceLine
+                x={1}
+                stroke="red"
+                label={{
+                  position: "top",
+                  value: "1.0",
+                  fontSize: 14,
+                }}
+              />
+            )}
           </ComposedChart>
         </ResponsiveContainer>
       </div>

@@ -506,7 +506,7 @@ function BarChartPage() {
                     stroke="none"
                     fill="#8884d8"
                     activeDot={false}
-                    opacity={0.2}
+                    opacity={0.0}
                     isAnimationActive={false}
                     name={name + "信頼区間90%"}
                   />
@@ -518,7 +518,7 @@ function BarChartPage() {
                     stroke="none"
                     fill="#82ca9d"
                     activeDot={false}
-                    opacity={0.2}
+                    opacity={0.6}
                     isAnimationActive={false}
                     name={name2 + "信頼区間90%"}
                   />
