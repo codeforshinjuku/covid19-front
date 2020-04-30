@@ -320,7 +320,7 @@ function BarChartPage() {
             <MenuItem value={"graph1"}>累計感染者数</MenuItem>
             <MenuItem value={"graph2"}>10万人あたり感染者数</MenuItem>
             <MenuItem value={"graph3"}>日別感染者数</MenuItem>
-            <MenuItem value={"graph4"}>実効再生産数</MenuItem>
+            <MenuItem value={"graph4"}>実効再生産数(Rt)</MenuItem>
             ))}
           </Select>
         </FormControl>

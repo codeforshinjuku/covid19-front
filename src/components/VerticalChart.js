@@ -137,7 +137,7 @@ function VerticalChartPage() {
           >
             <MenuItem value={"graph1"}>区市町村感染者累計</MenuItem>
             <MenuItem value={"graph2"}>区市町村10万人あたり</MenuItem>
-            <MenuItem value={"graph3"}>区市町村実効再生産数</MenuItem>
+            <MenuItem value={"graph3"}>区市町村実効再生産数(Rt)</MenuItem>
             ))}
           </Select>
         </FormControl>
