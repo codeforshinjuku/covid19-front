@@ -153,6 +153,17 @@ function BarChartPage() {
           : graph === "graph3"
           ? diffList[code2]
           : rtList.data[code2];
+      if (!patientTemp2) {
+        patientTemp2 = [];
+        for (let key in patientTemp) {
+          patientTemp2.push({
+            date: remove2020(key),
+            ML: 0,
+            Low_90: 0,
+            High_90: 0,
+          });
+        }
+      }
     }
     if (code3) {
       patientTemp3 =
@@ -161,6 +172,18 @@ function BarChartPage() {
           : graph === "graph3"
           ? diffList[code3]
           : rtList.data[code3];
+
+      if (!patientTemp3) {
+        patientTemp3 = [];
+        for (let key in patientTemp) {
+          patientTemp3.push({
+            date: remove2020(key),
+            ML: 0,
+            Low_90: 0,
+            High_90: 0,
+          });
+        }
+      }
     }
 
     for (let key in patientTemp) {
