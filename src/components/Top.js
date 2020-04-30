@@ -85,7 +85,7 @@ export default function Top() {
             </Link>
             のコードをフォークし開発しました。
             <br />
-            ※感染者数が少ない場合、Rtが1を超えやすくなります。
+            ※感染者数が少ない場合、Rtで大きな数字が出る場合があります。
           </span>
         </Typography>
         <div className={classes.buttons}>
