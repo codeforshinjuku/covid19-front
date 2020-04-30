@@ -15,6 +15,7 @@ import {
 import Fade from "@material-ui/core/Fade";
 import Grow from "@material-ui/core/Grow";
 import ReactGA from "react-ga";
+import Link from "@material-ui/core/Link";
 
 ReactGA.initialize("UA-36217274-7");
 ReactGA.pageview("/");
@@ -73,6 +74,16 @@ export default function Top() {
             <br />
             ※4/12練馬区が60から59へと減少する挙動は元データを反映したものです。
             <br />
+            ※Rtのプログラムは、
+            <Link
+              target="_blank"
+              color="inherit"
+              rel="noopner noreferer"
+              href="https://rt-live-japan.com/"
+            >
+              Rt Covid-19 Japanさま
+            </Link>
+            のコードをフォークし開発しました。
           </span>
         </Typography>
         <div className={classes.buttons}>
