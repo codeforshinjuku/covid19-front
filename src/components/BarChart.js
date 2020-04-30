@@ -123,7 +123,6 @@ function BarChartPage() {
 
   if (!patient) {
     getData(patientUrl, setPatient);
-    console.log(patient);
   }
 
   if (!diffList) {
