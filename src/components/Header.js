@@ -15,6 +15,7 @@ import BarChartIcon from "@material-ui/icons/BarChart";
 import CodeIcon from "@material-ui/icons/Code";
 import MenuIcon from "@material-ui/icons/Menu";
 import GitHubIcon from "@material-ui/icons/GitHub";
+import LocalDiningIcon from "@material-ui/icons/LocalDining";
 import LogoIcon from "../images/logo_white.png";
 
 const drawerWidth = 240;
@@ -101,6 +102,20 @@ function Header(props) {
           </ListItemIcon>
           <ListItemText primary="当サイトについて" />
         </ListItem>
+        <a
+          href="https://eats.codeforshinjuku.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          color="inherit"
+          style={{ textDecoration: "none", color: "rgba(0, 0, 0, 0.87)" }}
+        >
+          <ListItem button>
+            <ListItemIcon>
+              <LocalDiningIcon />
+            </ListItemIcon>
+            <ListItemText primary="新宿飲食店情報" />
+          </ListItem>
+        </a>
         <a
           href="https://github.com/codeforshinjuku"
           target="_blank"
