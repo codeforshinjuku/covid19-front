@@ -3,6 +3,9 @@ import axios from "axios";
 export const citylistUrl =
   "https://raw.githubusercontent.com/codeforshinjuku/covid19/master/dist/citylist.json";
 
+export const japanlistUrl =
+  "https://raw.githubusercontent.com/codeforshinjuku/covid19/master/dist/japanlist.json";
+
 export const patientUrl =
   "https://raw.githubusercontent.com/codeforshinjuku/covid19/master/dist/patient.json";
 
@@ -11,6 +14,9 @@ export const diffUrl =
 
 export const rtUrl =
   "https://raw.githubusercontent.com/codeforshinjuku/covid19-Rt/master/dist/rt_tokyo.json";
+
+export const rtUrl2 =
+  "https://raw.githubusercontent.com/codeforshinjuku/covid19-Rt/master/dist/rt_japan.json";
 
 export function getPopulation() {
   const population = {
